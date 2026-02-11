@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Office App</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body{font-family:Arial;background:#f2f2f2;padding:20px}
+input,button{width:100%;padding:10px;margin:5px 0}
+.card{background:white;padding:15px;border-radius:8px;margin-bottom:20px}
+.hidden{display:none}
+ul{padding-left:20px}
+ul li{margin:5px 0}
+button.small{padding:3px 7px;font-size:12px;margin-left:5px}
+</style>
+</head>
+
+<body>
+
+<div class="card" id="login">
+<h2>Admin Login</h2>
+<input id="user" placeholder="Username">
+<input id="pass" type="password" placeholder="Password">
+<button onclick="login()">Login</button>
+</div>
+
+<div class="card hidden" id="panel">
+<h3>Members</h3>
+
+<input id="member" placeholder="Member Name">
+<button onclick="add()">Add Member</button>
+
+<ul id="list"></ul>
+
+<h3>Tasks</h3>
+<input id="taskName" placeholder="Task Name">
+<select id="priority">
+<option>Low</option>
+<option selected>Medium</option>
+<option>High</option>
+</select>
+<button onclick="addTask()">Add Task</button>
+
+<ul id="taskList"></ul>
+
+<button onclick="logout()">Logout</button>
+</div>
+
+<script>
+let members=[];
+let tasks=[];
+
+function login(){
+if(user.value=="admin" && pass.value=="1234"){
+document.getElementById("login").classList.add("hidden");
+document.getElementById("panel").classList.remove("hidden");
+}else alert("Wrong Login");
+}
+
+function add(){
+if(member.value=="") return;
+members.push(member.value);
+render();
+member.value="";
+}
+
+function render(){
+list.innerHTML="";
+members.forEach((m,i)=>{
+list.innerHTML+=`<li>${m} <button class="small" onclick="del(${i})">X</button></li>`
+})
+}
+
+function del(i){
+members.splice(i,1);
+render();
+}
+
+function addTask(){
+let name=taskName.value;
+let prio=priority.value;
+if(name=="") return;
+tasks.push({name:name,priority:prio,status:"Pending"});
+renderTasks();
+taskName.value="";
+}
+
+function renderTasks(){
+taskList.innerHTML="";
+tasks.forEach((t,i)=>{
+taskList.innerHTML+=`<li>${t.name} [${t.priority}] <button class="small" onclick="toggle(${i})">Toggle</button> <button class="small" onclick="delTask(${i})">X</button></li>`
+})
+}
+
+function toggle(i){
+tasks[i].status=tasks[i].status=="Pending"?"Completed":"Pending";
+renderTasks();
+}
+
+function delTask(i
